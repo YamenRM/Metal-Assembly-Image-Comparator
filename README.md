@@ -29,7 +29,7 @@ The tool runs three steps in sequence:
 Install everything with:
 
 ```bash
-pip install Requirements.txt
+pip install requirements.txt
 ```
 ---
 
