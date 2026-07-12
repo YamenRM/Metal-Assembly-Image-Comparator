@@ -52,7 +52,19 @@ def align_images(img_ref, img_target, max_features=2000, keep_ratio=0.2):
     H, mask = cv2.findHomography(pts_target, pts_ref, cv2.RANSAC, 5.0)
     
     if H is None:
-        raise ValueError("Homography matrix estimation failed.")
+        raise ValueError("Perspective alignment failed: Plane matching calculation failed.")
+    
+    # Geometrical Validation Check: Detect extreme view angle distortion
+    # A valid perspective warp must maintain a positive determinant. 
+    # If it is negative or near zero, the warp is flipping, folding, or warping to infinity.
+    det = H[0,0]*H[1,1] - H[0,1]*H[1,0]
+    inlier_ratio = np.sum(mask) / len(good_matches) if len(good_matches) > 0 else 0 # type: ignore  
+
+    if det <= 0.1 or inlier_ratio < 0.35:
+        raise ValueError(
+            "Incompatible View Angles Detected! Please ensure both photographs are captured from "
+            "the same camera position and orientation relative to the metal structure."
+        )
     
     # Warp the target image to match the reference canvas orientation
     height, width, channels = img_ref.shape

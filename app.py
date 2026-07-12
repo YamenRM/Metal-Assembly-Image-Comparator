@@ -77,6 +77,6 @@ if st.session_state.comparison_result is not None:
     st.subheader("Comparison Result")
     st.image(
         st.session_state.comparison_result, 
-        use_container_width=True, 
+        use_column_width=True, 
         caption="Reference image (left) and highlighted target image (right)"
     )
