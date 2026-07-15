@@ -19,7 +19,7 @@ The tool runs three steps in sequence:
 - Python 3.9 or newer
 - Dependencies:
   ```
-  opencv-python
+  opencv-python-headless
   scikit-image
   numpy
   streamlit
